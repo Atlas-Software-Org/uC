@@ -2,14 +2,6 @@
 
 uC is a lightweight and tiny implementation of Libc.
 
-adam@DESKTOP-GP45GMR:~/microC$ ls -lh out/mc/libs/*
--rw-r--r-- 1 adam adam 14K Nov 15 10:45 out/mc/libs/micro_c.a
--rwxr-xr-x 1 adam adam 17K Nov 15 10:45 out/mc/libs/micro_c.so
-adam@DESKTOP-GP45GMR:~/microC$ ls -lh test_linux/out/mc/libs/*
--rw-r--r-- 1 adam adam 21K Nov 15 10:33 test_linux/out/mc/libs/micro_c.a
--rwxr-xr-x 1 adam adam 22K Nov 15 10:33 test_linux/out/mc/libs/micro_c.so
-adam@DESKTOP-GP45GMR:~/microC$
-
 ### After tests
 
 #### Empty helper
