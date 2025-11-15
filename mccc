@@ -1,0 +1,28 @@
+#!/bin/bash
+
+MC_INCLUDE="-I/usr/local/include/mc"
+LINK_MC=0
+OUTPUT=""
+ARGS=()
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -o)
+            OUTPUT="$2"
+            ARGS+=("$1" "$2")
+            shift 2
+            ;;
+        -mc|--link-mc)
+            LINK_MC=1
+            shift
+            ;;
+        *)
+            ARGS+=("$1")
+            shift
+            ;;
+    esac
+done
+if [[ $LINK_MC -eq 1 ]]; then
+    ARGS+=("/usr/local/lib/mc/micro_c.a")
+fi
+ARGS+=("$MC_INCLUDE")
+gcc "${ARGS[@]}"

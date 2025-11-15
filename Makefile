@@ -49,9 +49,60 @@ Headers:
 	@mkdir -p $(OUTMC)/inc/freestanding $(OUTMC)/inc/hosted
 	@cp -rf $(INC)/freestanding/* $(OUTMC)/inc/freestanding/
 	@cp -rf $(INC)/hosted/* $(OUTMC)/inc/hosted/
-	@cp -f $(INC)/HELPERS.h $(OUTMC)/inc/
 
 clean:
 	@rm -rf $(OUTMC)/obj $(LIBA) $(LIBSO)
 
 .PHONY: clean all Headers
+
+confirm-yes:
+	@printf "Proceed? [Y/n] "
+	@read ans; \
+	ans=$${ans:-Y}; \
+	if [ "$$ans" = "Y" ] || [ "$$ans" = "y" ]; then \
+		echo "You chose YES"; \
+	else \
+		echo "You chose NO"; \
+	fi
+
+install_mccc:
+	@install -m 755 ./mccc /usr/local/bin/mccc
+	@echo "CP      ./mccc /usr/local/bin/mccc"
+	@echo "Installed MCCC. Run MCCC with `mccc` command"
+
+install:
+	@printf "(Requires sudo) Proceed with installation? This process might be irreversible. [Y/n] "
+	@read ans; \
+	ans=$${ans:-Y}; \
+	if [ "$$ans" = "Y" ] || [ "$$ans" = "y" ]; then \
+		sudo mkdir -p /usr/local/include/mc/; \
+		echo "MKDIR   /usr/local/include/mc/"; \
+		sudo mkdir -p /usr/local/lib/mc/; \
+		echo "MKDIR   /usr/local/lib/mc/"; \
+		sudo cp -rf $(OUTMC)/inc/freestanding/* /usr/local/include/mc/; \
+		echo "CP      $(OUTMC)/inc/freestanding/* /usr/local/include/mc/"; \
+		sudo cp -rf $(OUTMC)/inc/hosted/* /usr/local/include/mc/; \
+		echo "CP      $(OUTMC)/inc/hosted/* /usr/local/include/mc/"; \
+		sudo cp -rf $(OUTMC)/libs/* /usr/local/lib/mc/; \
+		echo "CP      $(OUTMC)/libs/* /usr/local/lib/mc/"; \
+		echo "FINISH  Installed μC successfully"; \
+		$(MAKE) install_mccc; \
+	else \
+		echo "Process cancelled."; \
+	fi
+
+clean_install:
+	@printf "(Requires sudo) Proceed with cleaning installation? This process might be irreversible. [Y/n] "
+	@read ans; \
+	ans=$${ans:-Y}; \
+	if [ "$$ans" = "Y" ] || [ "$$ans" = "y" ]; then \
+		sudo rm -rf /usr/local/include/mc/; \
+		echo "RM      /usr/local/include/mc/"; \
+		sudo rm -rf /usr/local/lib/mc/; \
+		echo "RM      /usr/local/lib/mc/"; \
+		sudo rm -f /usr/local/bin/mccc; \
+		echo "RM      /usr/local/bin/mccc"; \
+		echo "FINISH  Deleted μC successfully"; \
+	else \
+		echo "Process cancelled."; \
+	fi
