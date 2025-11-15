@@ -11,10 +11,13 @@ typedef long ptrdiff_t;
 #define offsetof(type, member) __builtin_offsetof(type, member)
 
 #ifdef MC_STANDARD
-#define floortoalignment(value, alignment) // Deprecated for now
-#define ceiltoalignment(value, alignment) // Deprecated for now
+#define floortoalignment(value, alignment) \
+    ((value) & ~((alignment) - 1))
+#define ceiltoalignment(value, alignment) \
+    (((value) + (alignment) - 1) & ~((alignment) - 1))
 
-#define roundtonearest(value, place) // Deprecated for now
+#define roundtonearest(value, place) \
+    (((value) + ((place) / 2)) / (place) * (place))
 #endif
 
 #endif
